@@ -22,7 +22,10 @@ Route::middleware(['auth', 'adopt'])->group(function () {
     Route::get('/order-json', [App\Http\Controllers\TransOrderController::class, 'getOrders'])->name('order.json');
     Route::get('order/create',[ App\Http\Controllers\TransOrderController::class, 'create'])->name('order.form_order');
     Route::get('/order/pickup/{id}', [App\Http\Controllers\TransOrderController::class, 'pickup'])->name('order.pickup');
+    Route::put('/order-json-update-status/{id}', [App\Http\Controllers\TransOrderController::class, 'updateOrderStatus']);
     Route::get("print_struk/{id}", [App\Http\Controllers\TransOrderController::class, 'printStruk'])->name('print_struk');
+    Route::get('/order-json/{id}', [App\Http\Controllers\TransOrderController::class, 'getSingleOrder'])
+        ->name('order.json-single');
 });
 
 Route::middleware(['auth', 'pimpinan'])->group(function () {

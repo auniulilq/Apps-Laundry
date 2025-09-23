@@ -215,4 +215,24 @@ class TransOrderController extends Controller
         Alert::success('Success', 'Order successfully picked up.');
         return redirect()->route('order.index');
     }
+
+    public function updateOrderStatus(Request $request, $id)
+    {
+        $order = TransOrders::findOrFail($id);
+        $order->order_status = $request->order_status;
+        $order->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Order status updated successfully!'
+        ]);
+    }
+    public function getSingleOrder($id)
+    {
+        $order = TransOrders::with(['customer', 'details.service'])->where('id', $id)->first();
+
+        return response()->json($order);
+    }
+   
+    
 }

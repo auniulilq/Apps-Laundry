@@ -578,6 +578,11 @@
         </div>
     </div>
 
+
+
+
+
+    {{-- JAVASCIPT --}}
     <script>
         document.getElementById("customerName").addEventListener("change", function() {
             const selected = this.options[this.selectedIndex];
@@ -659,8 +664,7 @@
 
                 // Show Receipt
                 showReceipt(transaction);
-                transactionCounter++;
-
+                loadOrders();
                 // Clear form and cart
                 clearCart();
                 updateTransactionHistory();
@@ -693,17 +697,17 @@
                         ${transaction.items
                           .map(
                             (item) => `
-                                <div class="receipt-item">
-                                    <span>${item.service} (${item.weight} ${
-                                  item.service.includes("Sepatu")
-                                    ? "pasang"
-                                    : item.service.includes("Karpet")
-                                    ? "m²"
-                                    : "kg"
-                                })</span>
-                                    <span>Rp ${item.subtotal.toLocaleString()}</span>
-                                </div>
-                            `
+                                                                                                                         <div class="receipt-item">
+                                                                                                                         <span>${item.service} (${item.weight} ${
+                                                                                                                        item.service.includes("Sepatu")
+                                                                                                                        ? "pasang"
+                                                                                                                        : item.service.includes("Karpet")
+                                                                                                                        ? "m²"
+                                                                                                                        : "kg"
+                                                                                                                        })</span>
+                                                                                                                        <span>Rp ${item.subtotal.toLocaleString()}</span>
+                                                                                                                        </div>
+                                                                                                                    `
                           )
                           .join("")}
                     </div>
@@ -762,7 +766,7 @@
                       .map(
                         (item) =>
                           `${item.service.service_name} - ${item.qty}kg
-                              `
+                                                                                                                                              `
                       )
                       .join(", ")}</p>
                     <p>💰 Rp ${transaction.total.toLocaleString()}</p>
@@ -782,73 +786,44 @@
 
         function getStatusText(status) {
             const statusMap = {
-                pending: "Menunggu",
-                process: "Proses",
-                ready: "Siap",
-                delivered: "Selesai",
+                0: "Proses",
+                1: "Selesai",
             };
             return statusMap[status] || status;
         }
 
         function updateStats() {
-            const totalTransactions = transactions.length;
-            const totalRevenue = transactions.reduce((sum, t) => sum + t.total, 0);
-            const activeOrders = transactions.filter(
-                (t) => t.status !== "delivered"
-            ).length;
-            const completedOrders = transactions.filter(
-                (t) => t.status === "delivered"
-            ).length;
 
-            document.getElementById("totalTransactions").textContent =
-                totalTransactions;
-            document.getElementById(
-                "totalRevenue"
-            ).textContent = `Rp ${totalRevenue.toLocaleString()}`;
+            const totalTransactions = transactions.length;
+            const totalRevenue = transactions.reduce((sum, t) => sum + parseFloat(t.total), 0);
+            const activeOrders = transactions.filter((t) => t.order_status !== 1).length;
+            const completedOrders = transactions.filter((t) => t.order_status === 1).length;
+
+            document.getElementById("totalTransactions").textContent = totalTransactions;
+            document.getElementById("totalRevenue").textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
             document.getElementById("activeOrders").textContent = activeOrders;
-            document.getElementById("completedOrders").textContent =
-                completedOrders;
+            document.getElementById("completedOrders").textContent = completedOrders;
         }
 
         function showAllTransactions() {
             const allTransactionsHtml = `
                 <h2>📋 Semua Transaksi</h2>
                 <div style="max-height: 400px; overflow-y: auto;">
-                    ${transactions
-                      .map(
-                        (transaction) => `
-                            <div class="transaction-item">
-                                <h4>${transaction.order_code} - ${
-                              transaction.customer.customer_name
-                            }</h4>
-                                <p>📞 ${formatPhoneNumberDynamic(transaction.customer.phone)}</p>
-                                <p>🛍️ ${transaction.details
-                                  .map(
-                                    (item) =>
-                          `${item.service.service_name} - ${item.qty}kg
-                      `
-                                  )
-                                  .join(", ")}</p>
-                                <p>💰 Rp ${transaction.total.toLocaleString()}</p>
-                                <p>📅 ${new Date(transaction.order_date).toLocaleString(
-                                  "id-ID"
-                                )}</p>
-                                <span class="status-badge status-${
-                                  transaction.order_status
-                                }">${
-                                  transaction.order_status == 0
-                                    ? "Proses"
-                                    : transaction.order_status == 1
-                                    ? "Selesai"
-                                    : ""
-                                }</span>
-                                <button class="btn btn-primary" onclick="updateTransactionStatus('${
-                                  transaction.id
-                                }')" style="margin-top: 10px; padding: 5px 15px; font-size: 12px;">
-                                    📝 Update Status
-                                </button>
-                            </div>
-                        `
+                    ${transactions.map((transaction) => `
+                                                                                                                    <div class="transaction-item">
+                                                                                                                    <h4>${transaction.order_code} - ${
+                                                                                                                    transaction.customer.customer_name}</h4>
+                                                                                                                <p>📞 ${formatPhoneNumberDynamic(transaction.customer.phone)}</p>
+                                                                                                                <p>🛍️ ${transaction.details.map((item) =>`${item.service.service_name} - ${item.qty}kg`).join(", ")}</p>
+                                                                                                                <p>💰 Rp ${transaction.total.toLocaleString()}</p>
+                                                                                                                <p>📅 ${new Date(transaction.order_date).toLocaleString("id-ID")}</p>
+                                                                                                                <span class="status-badge status-${transaction.order_status}">${transaction.order_status == 0? "Proses": transaction.order_status == 1 ? "Selesai": ""}</span>
+                                                                                                                <button class="btn btn-primary" onclick="updateTransactionStatus('${
+                                                                                                                                                  transaction.id}')" style="margin-top: 10px; padding: 5px 15px; font-size: 12px;">
+                                                                                                                                                    📝 Update Status
+                                                                                                                                                </button>
+                                                                                                                                            </div>
+                                                                                                                                       `
                       )
                       .join("")}
                 </div>
@@ -863,29 +838,26 @@
             const thisMonth = today.getMonth();
             const thisYear = today.getFullYear();
 
-            const monthlyTransactions = transactions.filter((t) => {
-                const tDate = new Date(t.date);
-                return (
-                    tDate.getMonth() === thisMonth && tDate.getFullYear() === thisYear
-                );
+            const monthlyTransactions = transactions.filter(t => {
+                const tDate = new Date(t.order_date);
+                return tDate.getMonth() === thisMonth && tDate.getFullYear() === thisYear;
             });
 
-            const monthlyRevenue = monthlyTransactions.reduce(
-                (sum, t) => sum + t.total,
-                0
-            );
+            const monthlyRevenue = monthlyTransactions.reduce((sum, t) => sum + parseFloat(t.total), 0);
+
+            console.log(transactions);
 
             const serviceStats = {};
-            transactions.forEach((t) => {
-                t.items.forEach((item) => {
-                    if (!serviceStats[item.service]) {
-                        serviceStats[item.service] = {
+            transactions.forEach(t => {
+                t.details.forEach(item => {
+                    if (!serviceStats[item.service['service_name']]) {
+                        serviceStats[item.service['service_name']] = {
                             count: 0,
                             revenue: 0
                         };
                     }
-                    serviceStats[item.service].count++;
-                    serviceStats[item.service].revenue += item.subtotal;
+                    serviceStats[item.service['service_name']].count++;
+                    serviceStats[item.service['service_name']].revenue += parseFloat(item.subtotal);
                 });
             });
 
@@ -902,7 +874,7 @@
                         <p>Transaksi Bulan Ini</p>
                     </div>
                     <div class="stat-card">
-                        <h3>Rp ${monthlyRevenue.toLocaleString()}</h3>
+                        <h3>Rp. ${monthlyRevenue.toLocaleString('id-ID')}</h3>
                         <p>Pendapatan Bulan Ini</p>
                     </div>
                 </div>
@@ -917,24 +889,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${Object.entries(serviceStats)
-                          .map(
-                            ([service, stats]) => `
-                                <tr>
-                                    <td>${service}</td>
-                                    <td>${stats.count}</td>
-                                    <td>Rp ${stats.revenue.toLocaleString()}</td>
-                                </tr>
-                            `
-                          )
-                          .join("")}
+                        ${Object.entries(serviceStats).map(([service, stats]) => `
+                                                                                                                <tr>
+                                                                                                                    <td>${service}</td>
+                                                                                                                    <td>${stats.count}</td>
+                                                                                                                    <td>Rp. ${stats.revenue.toLocaleString('id-ID')}</td>
+                                                                                                                </tr>
+                                                                                                            `).join('')}
                     </tbody>
                 </table>
             `;
 
-            document.getElementById("modalContent").innerHTML = reportsHtml;
-            document.getElementById("transactionModal").style.display = "block";
+            document.getElementById('modalContent').innerHTML = reportsHtml;
+            document.getElementById('transactionModal').style.display = 'block';
         }
+
 
         function manageServices() {
             const servicesHtml = `
@@ -1001,84 +970,87 @@
             document.getElementById("transactionModal").style.display = "block";
         }
 
-        function updateTransactionStatus(transactionId) {
-            const transaction = transactions.find((t) => t.id === transactionId);
-            if (!transaction) return;
+        async function updateTransactionStatus(transactionId) {
+            try {
+                // Ambil data transaksi dari database
+                const res = await fetch(`/order-json/${transactionId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            "content")
+                    },
+                });
+                if (!res.ok) throw new Error("Gagal mengambil data transaksi");
+                const transaction = await res.json();
 
-            const statusOptions = [{
-                    value: "pending",
-                    text: "Menunggu"
-                },
-                {
-                    value: "process",
-                    text: "Sedang Proses"
-                },
-                {
-                    value: "ready",
-                    text: "Siap Diambil"
-                },
-                {
-                    value: "delivered",
-                    text: "Selesai"
-                },
-            ];
+                const statusOptions = [{
+                        value: "0",
+                        text: "Baru"
+                    },
+                    {
+                        value: "1",
+                        text: "Sudah diambil"
+                    }
+                ];
 
-            const statusHtml = `
-                <h2>📝 Update Status Transaksi</h2>
-                <h3>${transaction.id} - ${transaction.customer.name}</h3>
-                <p>Status saat ini: <span class="status-badge status-${
-                  transaction.status
-                }">${getStatusText(transaction.status)}</span></p>
+                const statusHtml = `
+                    <h2>📝 Update Status Transaksi</h2>
+                    <h3>${transaction.order_code} - ${transaction.customer.customer_name}</h3>
+                    <p>Status saat ini: <span class="status-badge status-${transaction.order_status}">
+                        ${transaction.order_status == 0 ? "Baru" : transaction.order_status == 1 ? "Sudah diambil" : ""}
+                    </span></p>
+                    <div class="form-group">
+                        <label>Pilih Status Baru:</label>
+                        <select id="newStatus" style="width: 100%; padding: 10px; margin: 10px 0;">
+                            ${statusOptions.map(option => `
+                                                                                                        <option value="${option.value}" ${transaction.order_status == option.value ? "selected" : ""}>
+                                                                                                            ${option.text}
+                                                                                                        </option>
+                                                                                                    `).join("")}
+                        </select>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-success" onclick="saveStatusUpdate('${transactionId}')">
+                            ✅ Simpan Update
+                        </button>
+                        <button class="btn btn-danger" onclick="closeModal()" style="margin-left: 10px;">
+                            ❌ Batal
+                        </button>
+                    </div>
+                `;
 
-                <div class="form-group">
-                    <label>Pilih Status Baru:</label>
-                    <select id="newStatus" style="width: 100%; padding: 10px; margin: 10px 0;">
-                        ${statusOptions
-                          .map(
-                            (option) => `
-                                <option value="${option.value}" ${
-                                  transaction.status === option.value
-                                    ? "selected"
-                                    : ""
-                                }>
-                                    ${option.text}
-                                </option>
-                            `
-                          )
-                          .join("")}
-                    </select>
-                </div>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn btn-success" onclick="saveStatusUpdate('${transactionId}')">
-                        ✅ Simpan Update
-                    </button>
-                    <button class="btn btn-danger" onclick="closeModal()" style="margin-left: 10px;">
-                        ❌ Batal
-                    </button>
-                </div>
-            `;
-
-            document.getElementById("modalContent").innerHTML = statusHtml;
-            document.getElementById("transactionModal").style.display = "block";
+                document.getElementById("modalContent").innerHTML = statusHtml;
+                document.getElementById("transactionModal").style.display = "block";
+            } catch (error) {
+                alert("Gagal mengambil data transaksi!");
+                console.error(error);
+            }
         }
 
-        function saveStatusUpdate(transactionId) {
+        async function saveStatusUpdate(transactionId) {
             const newStatus = document.getElementById("newStatus").value;
-            const transactionIndex = transactions.findIndex(
-                (t) => t.id === transactionId
-            );
-
-            if (transactionIndex !== -1) {
-                transactions[transactionIndex].status = newStatus;
-                localStorage.setItem(
-                    "laundryTransactions",
-                    JSON.stringify(transactions)
-                );
-                updateTransactionHistory();
-                updateStats();
-                closeModal();
+            try {
+                const res = await fetch(`/order-json-update-status/${transactionId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            "content")
+                    },
+                    body: JSON.stringify({
+                        order_status: newStatus
+                    })
+                });
+                if (!res.ok) throw new Error("Gagal update status transaksi");
                 alert("Status berhasil diupdate!");
+                closeModal();
+                await loadOrders(); // reload data dari database
+            } catch (error) {
+                alert("Gagal update status transaksi!");
+                console.error(error);
             }
         }
 
@@ -1290,9 +1262,6 @@
 
         // panggil saat halaman load
         document.addEventListener("DOMContentLoaded", loadOrders);
-
-
-
     </script>
 
 </body>

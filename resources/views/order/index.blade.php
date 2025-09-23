@@ -43,7 +43,7 @@
                                         Pick up
                                     </button>
                                 </form>
- @endif
+                              @endif
                                     <form action="{{ route('order.destroy', $order->id) }}" method="post" id="delete-form-{{ $order->id }}" class="d-inline">
                                         @csrf
                                         @method('DELETE')

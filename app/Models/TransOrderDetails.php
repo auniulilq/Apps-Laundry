@@ -17,4 +17,5 @@ class TransOrderDetails extends Model
     {
         return $this->belongsTo(TypeOfServices::class, 'id_service', 'id');
     }
+    
 }
