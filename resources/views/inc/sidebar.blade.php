@@ -1,7 +1,5 @@
 <aside id="sidebar" class="sidebar">
-
     <ul class="sidebar-nav" id="sidebar-nav">
-
       <li class="nav-item">
         <a class="nav-link collapsed text-black" href="{{ route('dashboard.index') }}">
           <i class="bi bi-grid"></i>

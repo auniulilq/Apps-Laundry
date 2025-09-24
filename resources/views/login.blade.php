@@ -31,8 +31,8 @@
 
   <style>
       body.login-page {
-        background: url('{{asset("assets/img/bg-login-ldy.jpeg")}}') ;
-        background-size: cover;
+        background: url('{{asset("assets/img/bg1.jpeg")}}') ;
+        background-size: auto;
       }
   </style>
 
@@ -59,7 +59,7 @@
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">Login Dulu Yeah</span>
+                  <span class="d-none d-lg-block">demo: admin@gmail.com/12345678</span>
                 </a>
               </div><!-- End Logo -->
 

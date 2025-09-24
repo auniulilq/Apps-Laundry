@@ -58,8 +58,8 @@
 <body>
     <div class="struk">
         <div class="struk-header">
-            <h3>Laundry Gemash</h3>
-            <h2>Bersihnya Nyata, Hemat Waktunya!</h2>
+            <h2>Laundry </h2>
+            <h5>Bersihnya Nyata, Hemat Waktunya!</h5>
 
             <div class="info text-center">
                 Jl. Manggarai Barat Jakarta Selatan
@@ -103,7 +103,7 @@
         </div>
         <div class="line"></div>
         <footer class="text-center">
-            Terima Kasih sudah berlangganan di Laundry Gemash
+            Terima Kasih sudah berlangganan di Laundry 
         </footer>
     </div>
     <script>

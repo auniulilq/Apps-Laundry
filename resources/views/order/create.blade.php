@@ -86,7 +86,6 @@
             return;
         }
         const priceService = parseInt(optionService.dataset.price);
-
         const tr = document.createElement('tr');
         let no = 1;
         tr.innerHTML = `
@@ -103,7 +102,6 @@
         `;
         tbody.appendChild(tr);
         no++;
-
         selectService.value = '';
         selectNotes.value = '';
         updateNo();
